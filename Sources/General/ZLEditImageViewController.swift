@@ -926,10 +926,7 @@ open class ZLEditImageViewController: UIViewController {
     func clipBtnClick() {
         preClipStatus = currentClipStatus
         
-        var currentEditImage = editImage
-        autoreleasepool {
-            currentEditImage = buildImage()
-        }
+        let currentEditImage = buildImage()  // No need for optional binding
         
         let vc = ZLClipImageViewController(image: currentEditImage, status: currentClipStatus)
         let rect = mainScrollView.convert(containerView.frame, to: view)
@@ -942,22 +939,31 @@ open class ZLEditImageViewController: UIViewController {
             )
         vc.modalPresentationStyle = .fullScreen
         
+        // Handle crop completion
         vc.clipDoneBlock = { [weak self] angle, editRect, selectRatio in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             print("editRect \(editRect) angle \(angle) selected ratio \(selectRatio) ")
-            self.clipImage(status: ZLClipStatus(editRect: editRect, angle: angle, ratio: selectRatio))
-            self.editorManager.storeAction(.clip(oldStatus: self.preClipStatus, newStatus: self.currentClipStatus))
+
+            // Apply the new crop settings
+            let newClipStatus = ZLClipStatus(editRect: editRect, angle: angle, ratio: selectRatio)
+            self.clipImage(status: newClipStatus)
+            
+            // Save the edit history
+            self.editorManager.storeAction(.clip(oldStatus: self.preClipStatus, newStatus: newClipStatus))
+            
+            // Restore UI visibility
+            self.restoreEditorUI()
         }
         
-        vc.cancelClipBlock = { [weak self] () in
-            self?.resetContainerViewFrame()
+        // Handle crop cancellation
+        vc.cancelClipBlock = { [weak self] in
+            guard let self = self else { return }
+            self.resetContainerViewFrame()
+            self.restoreEditorUI()
         }
         
         present(vc, animated: false) {
-            self.mainScrollView.alpha = 0
-            self.topShadowView.alpha = 0
-            self.bottomShadowView.alpha = 0
-            self.adjustSlider?.alpha = 0
+            self.hideEditorUI()
         }
         
         selectedTool = nil
@@ -965,6 +971,25 @@ open class ZLEditImageViewController: UIViewController {
         setFilterViews(hidden: true)
         setAdjustViews(hidden: true)
     }
+
+    // Function to hide UI before presenting crop view
+    private func hideEditorUI() {
+        mainScrollView.alpha = 0
+        topShadowView.alpha = 0
+        bottomShadowView.alpha = 0
+        adjustSlider?.alpha = 0
+    }
+
+    // Function to restore UI after cropping or canceling
+    private func restoreEditorUI() {
+        UIView.animate(withDuration: 0.3) {
+            self.mainScrollView.alpha = 1
+            self.topShadowView.alpha = 1
+            self.bottomShadowView.alpha = 1
+            self.adjustSlider?.alpha = 1
+        }
+    }
+
     
     private func clipImage(status: ZLClipStatus) {
         let oldAngle = currentClipStatus.angle
