@@ -944,7 +944,7 @@ open class ZLEditImageViewController: UIViewController {
         
         vc.clipDoneBlock = { [weak self] angle, editRect, selectRatio in
             guard let `self` = self else { return }
-            
+            print("editRect \(editRect) angle \(angle) selected ratio \(selectRatio) ")
             self.clipImage(status: ZLClipStatus(editRect: editRect, angle: angle, ratio: selectRatio))
             self.editorManager.storeAction(.clip(oldStatus: self.preClipStatus, newStatus: self.currentClipStatus))
         }
