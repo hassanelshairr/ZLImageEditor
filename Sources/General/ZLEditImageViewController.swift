@@ -937,7 +937,7 @@ open class ZLEditImageViewController: UIViewController {
                 editRect: currentClipStatus.editRect,
                 isCircle: currentClipStatus.ratio?.isCircle ?? false
             )
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = .overCurrentContext
         
         // Handle crop completion
         vc.clipDoneBlock = { [weak self] angle, editRect, selectRatio in
