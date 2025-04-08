@@ -1464,7 +1464,7 @@ open class ZLEditImageViewController: UIViewController {
         }
         
         vc.modalPresentationStyle = .overCurrentContext
-        showDetailViewController(vc, sender: nil)
+        present(vc, animated: true, completion: nil)
     }
     
     func getStickerOriginFrame(_ size: CGSize) -> CGRect {
