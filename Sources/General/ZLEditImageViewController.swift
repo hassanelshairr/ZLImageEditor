@@ -1103,7 +1103,7 @@ open class ZLEditImageViewController: UIViewController {
         }
     }
     
-    @objc func doneBtnClick() {
+  @objc func doneBtnClick() {
         var stickerStates: [ZLBaseStickertState] = []
         for view in stickersContainer.subviews {
             guard let view = view as? ZLBaseStickerView else { continue }
@@ -1125,9 +1125,8 @@ open class ZLEditImageViewController: UIViewController {
         var editModel: ZLEditImageModel?
         
         func callback() {
-            dismiss(animated: animateDismiss) {
-                self.editFinishBlock?(resImage, editModel)
-            }
+            // Do NOT dismiss immediately; instead, handle the closing from outside
+            self.editFinishBlock?(resImage, editModel)
         }
         
         guard hasEdit else {
@@ -1166,6 +1165,7 @@ open class ZLEditImageViewController: UIViewController {
             }
         }
     }
+
     
     @objc func undoBtnClick() {
         editorManager.undoAction()
