@@ -191,9 +191,22 @@ open class ZLEditImageViewController: UIViewController {
         btn.adjustsImageWhenHighlighted = false
         btn.isEnabled = !editorManager.actions.isEmpty
         btn.enlargeInset = 8
+
+        // Add background
+        btn.backgroundColor = UIColor(white: 1.0, alpha: 0.8) // semi-transparent white
+        btn.layer.cornerRadius = 20 // make it round or adjust
+        btn.layer.masksToBounds = true
+
+        // Optional: Add shadow
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 0.1
+        btn.layer.shadowOffset = CGSize(width: 0, height: 1)
+        btn.layer.shadowRadius = 2
+
         btn.addTarget(self, action: #selector(undoBtnClick), for: .touchUpInside)
         return btn
     }()
+
     
     open lazy var redoBtn: ZLEnlargeButton = {
         let btn = ZLEnlargeButton(type: .custom)
@@ -202,9 +215,20 @@ open class ZLEditImageViewController: UIViewController {
         btn.adjustsImageWhenHighlighted = false
         btn.isEnabled = editorManager.actions.count != editorManager.redoActions.count
         btn.enlargeInset = 8
+
+        btn.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        btn.layer.cornerRadius = 20
+        btn.layer.masksToBounds = true
+
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 0.1
+        btn.layer.shadowOffset = CGSize(width: 0, height: 1)
+        btn.layer.shadowRadius = 2
+
         btn.addTarget(self, action: #selector(redoBtnClick), for: .touchUpInside)
         return btn
     }()
+
     
     open lazy var editToolCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
