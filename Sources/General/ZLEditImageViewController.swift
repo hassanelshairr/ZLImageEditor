@@ -185,39 +185,26 @@ open class ZLEditImageViewController: UIViewController {
     }()
 
     open lazy var undoBtn: ZLEnlargeButton = {
-        let btn = ZLEnlargeButton(type: .custom)
-
-        // ✅ Use new image asset
-        btn.setImage(.zl.getImage("undoPdf"), for: .normal)
-        btn.setImage(.zl.getImage("undoPdf"), for: .disabled)
-        btn.adjustsImageWhenHighlighted = false
-        btn.isEnabled = !editorManager.actions.isEmpty
-        btn.enlargeInset = 8
-        btn.addTarget(self, action: #selector(undoBtnClick), for: .touchUpInside)
-        return btn
-    }()
-
-    open lazy var redoBtn: ZLEnlargeButton = {
-        let btn = ZLEnlargeButton(type: .custom)
-
-        btn.setImage(.zl.getImage("redoPdf"), for: .normal)
-        btn.setImage(.zl.getImage("redoPdf"), for: .disabled)
-        btn.adjustsImageWhenHighlighted = false
-        btn.isEnabled = editorManager.actions.count != editorManager.redoActions.count
-        btn.enlargeInset = 8
-
-        btn.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        btn.layer.cornerRadius = 8
-        btn.layer.masksToBounds = true
-
-        btn.layer.shadowColor = UIColor.black.cgColor
-        btn.layer.shadowOpacity = 0.15
-        btn.layer.shadowOffset = CGSize(width: 0, height: 2)
-        btn.layer.shadowRadius = 4
-
-        btn.addTarget(self, action: #selector(redoBtnClick), for: .touchUpInside)
-        return btn
-    }()
+         let btn = ZLEnlargeButton(type: .custom)
+         btn.setImage(.zl.getImage("undoPdf"), for: .disabled)
+         btn.setImage(.zl.getImage("undoDisabled"), for: .normal)
+         btn.adjustsImageWhenHighlighted = false
+         btn.isEnabled = !editorManager.actions.isEmpty
+         btn.enlargeInset = 8
+         btn.addTarget(self, action: #selector(undoBtnClick), for: .touchUpInside)
+         return btn
+     }()
+     
+     open lazy var redoBtn: ZLEnlargeButton = {
+         let btn = ZLEnlargeButton(type: .custom)
+         btn.setImage(.zl.getImage("redoPdf"), for: .normal)
+         btn.setImage(.zl.getImage("redoDisabled"), for: .disabled)
+         btn.adjustsImageWhenHighlighted = false
+         btn.isEnabled = editorManager.actions.count != editorManager.redoActions.count
+         btn.enlargeInset = 8
+         btn.addTarget(self, action: #selector(redoBtnClick), for: .touchUpInside)
+         return btn
+     }()
 
 
 
