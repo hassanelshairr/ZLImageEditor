@@ -186,8 +186,8 @@ open class ZLEditImageViewController: UIViewController {
 
     open lazy var undoBtn: ZLEnlargeButton = {
          let btn = ZLEnlargeButton(type: .custom)
-         btn.setImage(.zl.getImage("undoPng"), for: .disabled)
-         btn.setImage(.zl.getImage("undoDisabled"), for: .normal)
+         btn.setImage(.zl.getImage("undoDisabled"), for: .disabled)
+         btn.setImage(.zl.getImage("undoPng"), for: .normal) 
          btn.adjustsImageWhenHighlighted = false
          btn.isEnabled = !editorManager.actions.isEmpty
          btn.enlargeInset = 8
